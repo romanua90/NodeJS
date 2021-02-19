@@ -26,8 +26,7 @@ fs.readdir(boysGroup, (err, files) => {
                         console.log(e2);
                         return;
                     }
-                    console.log('Sorting of MALE was DONE!')
-                    return;
+                    console.log('Sorting of MALE was DONE!');
                 })
             }
         })
@@ -52,8 +51,7 @@ fs.readdir(girlsGroup, (e, files)=>{
                         console.log(e2);
                         return;
                     }
-                    console.log('Sorting of FEMALE was done!')
-                    return;
+                    console.log('Sorting of FEMALE was done!');
                 })
             }
 

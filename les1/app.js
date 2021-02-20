@@ -20,12 +20,13 @@ fs.readdir(boysGroup, (err, files) => {
 
             const buffer = JSON.parse(content.toString());
 
-            if (buffer.gender === 'male') {
+            if (buffer.gender === 'female') {
                 fs.rename(path.join(boysGroup, file), path.join(girlsGroup, file), e2 => {
                     if (e2) {
                         console.log(e2);
+                        return;
                     }
-                    console.log('Sorting of MALE was DONE!')
+                    console.log('Sorting of MALE was DONE!');
                 })
             }
         })
@@ -44,13 +45,13 @@ fs.readdir(girlsGroup, (e, files)=>{
                 return;
             }
             const buffer= JSON.parse(content.toString());
-            if (buffer.gender==='female'){
+            if (buffer.gender==='male'){
                 fs.rename(path.join(girlsGroup, file), path.join(boysGroup,file), e2=>{
                     if (e2) {
                         console.log(e2);
                         return;
                     }
-                    console.log('Sorting of FEMALE was done!')
+                    console.log('Sorting of FEMALE was done!');
                 })
             }
 

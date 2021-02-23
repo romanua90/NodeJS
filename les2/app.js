@@ -3,20 +3,17 @@ const express=require('express')
 const expressHbs=require('express-handlebars');
 const path=require('path');
 const app=express();
-const usersPath = path.join(__dirname, 'users', 'users.json');
+const usersPath = path.join(__dirname, 'DataBase', 'users.json');
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use (express.static(path.join(__dirname,'static')));
-
-//========================HBS ===============================================
 
 app.set('view engine', '.hbs');
 app.engine('.hbs',expressHbs({
     defaultLayout: false
 }));
 app.set('views', path.join(__dirname, 'static'));
-//========================Home===================================================
 
 app.get('/', ((req, res) => {
     res.redirect('/login');
@@ -24,8 +21,8 @@ app.get('/', ((req, res) => {
 
 
 
-//======================== Register ===============================================
-
+//**
+//this block describes REGISTER end point
 
 app.get('/register', ((req, res) => {
     res.render('register');
@@ -55,9 +52,8 @@ app.post('/register', (req, res) =>{
           res.redirect('/error')
     });
     });
-//===============================Login============================================
-
-
+//**
+// this block describes LOGIN end point
 app.get('/login', (req, res) => {
     res.render('login');
 });
@@ -83,7 +79,8 @@ app.post('/login', (req, res) => {
 })
 
 
-//======================User===================================================
+//**
+// this block describes USER information end point
 app.get('/users/:userId', (req, res) => {
     const {userId} = req.params;
 
@@ -97,7 +94,8 @@ app.get('/users/:userId', (req, res) => {
         res.render('user', {user: users[userId]});
     });
 });
-//======================Users===================================================
+//**
+// this block describes INFORMATION ABOUT ALL USERS end point
 app.get('/users', (req, res) => {
     fs.readFile(usersPath, (err, data) => {
         if (err) {
@@ -109,12 +107,12 @@ app.get('/users', (req, res) => {
         res.render('users', {users});
     })
 });
-//======================Error===================================================
+
+//**
+// this block describes ERROR end point
 app.get('/error', (req, res) => {
     res.render('error');
 });
-
-// ==================Port 5000===============================================
 
 app.listen(5000, ()=>{
     console.log('App listen 5000')

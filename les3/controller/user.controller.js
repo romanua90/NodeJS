@@ -5,9 +5,9 @@ module.exports = {
     getAllUsers: async (req, res) => {
         try{
             
-        const {body: {prefLang = 'de'}, query} = req;
+        const {body: {prefLang = 'de'}} = req;
             
-        const users = await userService.findUsers(query, prefLang);
+        const users = await userService.findUsers(prefLang);
             
         res.json(users);
         }
@@ -21,9 +21,9 @@ module.exports = {
     getSingleUser: async (req, res) => {
         try{
             
-        const {userId} = req.params;
-            
-        const user = await userService.findUserById(userId);
+        const {params: {userId}, body: {prefLang = 'de'}} = req;
+                      
+        const user = await userService.findUserById(userId, prefLang);
 
         res.json(user);
         }

@@ -36,17 +36,30 @@ module.exports = {
         return users[userId];
     },
 
-    createUser: async (userObject) => {
+    createUser: async (userObject, prefLang) => {
         const DB = await readFilePromise(dbPath);
         const users = JSON.parse(DB.toString());
+
+        const found = users.find(user => user.userId === userObject.userId);
+
+        if (found) {
+            throw new Error(errorMessages.USER_IS_EXIST[prefLang]);
+        }
+
         users.push(userObject);
         return writeFilePromise(dbPath, JSON.stringify(users));
     },
 
-    deleteUser: async (userId) => {
+    deleteUser: async (userId, prefLang) => {
         const DB = await readFilePromise(dbPath);
         const users = JSON.parse(DB.toString());
         users.splice(userId, 1);
-        return writeFilePromise(dbPath, JSON.stringify(users));
+
+        if (users.splice(userId, 1)) {
+            writeFilePromise(dbPath, JSON.stringify(users));
+            throw new Error(errorMessages. USER_DELETED[prefLang]);
+        }
+
+        return;
     }
 }

@@ -1,8 +1,8 @@
 module.exports = {
-    TOO_WEAK_PASSWORD: {
-        en: 'Too weak password',
-        ua: 'Пароль залегкий',
-		de: 'Passwort ist zu einfach'
+    WRONG_EMAIL: {
+        en: 'Wrong email',
+        ua: 'Неправильний email',
+		de: 'Email ist falsch'
     },
 	USER_NOT_CREATED: {
 		en: 'User is not created',
@@ -19,4 +19,9 @@ module.exports = {
         ua: 'Користувач вже існує',
 		de: 'Benutzer bereits existiert'
     },
+    USER_DELETED: {
+        en: 'User was deleted',
+        ua: 'Користувача видалено',
+        de: 'Benutzer wurde geloescht'
+    }
 }

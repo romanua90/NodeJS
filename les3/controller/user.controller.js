@@ -38,7 +38,9 @@ module.exports = {
             
         const user = req.body;
 
-        await userService.createUser(user);
+        const {params: {userId}, body: {prefLang = 'de'}} = req;
+
+        await userService.createUser(user,prefLang);
 
         res.status(201).json('USER IS CREATED!');
         }
@@ -48,11 +50,12 @@ module.exports = {
     },
     deleteUser: async (req, res) => {
         try {
-        const {userId} = req.params;
-        
-        const user = await userService.deleteUser(userId);
 
-        res.json(user);
+        const {params: {userId}, body: {prefLang = 'de'}} = req;
+        
+        const user = await userService.deleteUser(userId, prefLang);
+
+        res.status(201).json('USER WAS DELETED!');
         }
         catch (err){
           res.status(errorCodes.BAD_REQUEST).json(err.message);   

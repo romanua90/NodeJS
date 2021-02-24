@@ -18,14 +18,14 @@ module.exports = {
 
     isUserValid: (req, res, next) => {
         try {
-            const { name, password, preferL = 'en' } = req.body;
+            const { name, email, preferL = 'de' } = req.body;
 
-            if (!name || !password) {
-                throw new Error('Some filed is empty');
+            if (!name || !email) {
+                throw new Error('Some field is empty');
             }
 
-            if (password.length < 6) {
-                throw new Error(errorMessages.TOO_WEAK_PASSWORD[preferL]);
+            if (!email.includes("@")) {
+                throw new Error(errorMessages.WRONG_EMAIL[preferL]);
             }
 
             next();

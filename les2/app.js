@@ -3,7 +3,7 @@ const express=require('express')
 const expressHbs=require('express-handlebars');
 const path=require('path');
 const app=express();
-const usersPath = path.join(__dirname, 'DataBase', 'users.json');
+const usersPath = path.join(__dirname, 'dataBase', 'users.json');
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));

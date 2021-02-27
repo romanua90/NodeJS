@@ -18,13 +18,13 @@ module.exports = {
 
     isUserValid: (req, res, next) => {
         try {
-            const { name, email, preferL = 'de' } = req.body;
+            const { name, email, preferL = 'de' } = req.query;
 
             if (!name || !email) {
                 throw new Error('Some field is empty');
             }
 
-            if (!email.includes("@")) {
+            if (!email.includes('@')) {
                 throw new Error(errorMessages.WRONG_EMAIL[preferL]);
             }
 
@@ -33,4 +33,4 @@ module.exports = {
             res.status(errorCodes.BAD_REQUEST).json(e.message);
         }
     }
-}
+};

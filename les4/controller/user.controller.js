@@ -5,12 +5,11 @@ const errorMessages = require('../messages/error.messages');
 module.exports = {
     getAllUsers: async (req, res) => {
         try {
-            const { preferL = 'de' } = req.query;
             const filter = req.query;
 
             delete filter.preferL;
 
-            const users = await userService.findUsers(filter, preferL);
+            const users = await userService.findUsers(filter);
             res.status(errorCodes.OK).json(users);
         } catch (err) {
             res.status(errorCodes.BAD_REQUEST).json(err.message);
@@ -19,18 +18,18 @@ module.exports = {
 
     getSingleUser: async (req, res) => {
         try {
-            const { params: { userId }, body: { prefLang = 'de' } } = req;
+            const { userId } = req.params;
 
-            const user = await userService.findUserById(userId, prefLang);
+            const user = await userService.findUserById(userId);
 
-            res.json(user);
+            res.status(errorCodes.OK).json(user);
         } catch (err) {
             res.status(errorCodes.BAD_REQUEST).json(err.message);
         }
     },
     createUser: async (req, res) => {
         try {
-            const { preferL = 'en' } = req.query;
+            const { preferL = 'de' } = req.query;
 
             await userService.createUser(req.query);
 
@@ -41,14 +40,13 @@ module.exports = {
     },
     deleteUser: async (req, res) => {
         try {
-            const { params: { userId }, body: { prefLang = 'de' } } = req;
+            const { params: { userId }, query: { prefLang = 'de' } } = req;
 
-            const user = await userService.deleteUser(userId, prefLang);
-            console.log(user);
+            await userService.deleteUser(userId);
 
-            res.status(201).json('USER WAS DELETED!');
+            res.status(errorCodes.OK).json(errorMessages.USER_DELETED[prefLang]);
         } catch (err) {
             res.status(errorCodes.BAD_REQUEST).json(err.message);
         }
-    }
+    },
 };

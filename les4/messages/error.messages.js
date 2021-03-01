@@ -34,34 +34,34 @@ module.exports = {
         ua: 'Твій вік недійсний',
         de: 'Ihr Benutzeralter ist ungültig'
     },
-    TOO_BIG_AGE: {
+    TOO_OLD: {
         en: 'Your user age is too big',
         ua: 'Твій вік занадто великий',
-        ru: 'Твой возраст слишком большой'
+        de: 'hr Benutzeralter ist zu gross'
     },
     ID_IS_INVALID: {
         en: 'Your user ID is invalid',
         ua: 'Твій ID не валідний',
-        ru: 'Твой ID не валидный'
+        de: 'Dein ID ist nicht ungültig'
     },
     ABSENT_FIELDS: {
         en: 'Request do not have some fields',
-        ua: 'У запросі відсутні деякі поля',
-        ru: 'В запросе отсутствует некоторые поля'
+        ua: 'У запиті відсутні деякі поля',
+        de: 'Anfrage haben keine Felder'
     },
     TOO_SHORT_FIRST_NAME: {
         en: 'Too shor first name - must be at least 3 symbols',
         ua: 'В тебе занадто коротке імя користувача - має бути як мінімум 3 символів',
-        ru: 'У тебя слишком короткое имя пользователя - должно быть минимум 3 символов'
+        de: 'Zu kurze Vorname - muss mindestens 7 Symbole enthalten'
     },
     TOO_SHORT_LAST_NAME: {
         en: 'Too shor last name - must be at least 7 symbols',
-        ua: 'В тебе занадто коротке призвище користувача - має бути як мінімум 3 символів',
-        ru: 'У тебя слишком короткоя фамилия пользователя - должно быть минимум 3 символов'
+        ua: 'В тебе занадто коротке призвище користувача - мінімум 7 символів',
+        de: 'Zu kurze Nachname - muss mindestens 7 Symbole enthalten'
     },
     NO_RESULT_FOUND: {
         en: 'Search on database have no results',
         ua: 'Пошук по базі даних не мав результату',
-        ru: 'Поиск по базе данных не принес результата'
+        de: 'Datenbanksuche hat keine Ergebnisse zurückgegeben'
     }
 };

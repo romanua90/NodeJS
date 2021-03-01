@@ -1,7 +1,6 @@
 const errorCodes = require('../constant/errorCodes.enum');
 const errorMessages = require('../messages/error.messages');
 
-const userService = require('../service/user.service');
 
 module.exports = {
     checkIsIdValid: (req, res, next) => {
@@ -29,11 +28,11 @@ module.exports = {
                 throw new Error(errorMessages.ABSENT_FIELDS[preferL]);
             }
 
-            if (first_name.length < 2) {
+            if (first_name.length <= 1) {
                 throw new Error(errorMessages.TOO_SHORT_FIRST_NAME[preferL]);
             }
 
-            if (last_name.length < 2) {
+            if (last_name.length <= 1) {
                 throw new Error(errorMessages.TOO_SHORT_LAST_NAME[preferL]);
             }
 
@@ -42,7 +41,7 @@ module.exports = {
             }
 
             if (age.length > 3) {
-                throw new Error(errorMessages.TOO_BIG_AGE[preferL]);
+                throw new Error(errorMessages.TOO_OLD[preferL]);
             }
 
             next();

@@ -1,13 +1,17 @@
 const errorCodes = require('../constant/errorCodes.enum');
 const errorMessages = require('../messages/error.messages');
 
+const userService = require('../service/user.service');
+
 module.exports = {
     checkIsIdValid: (req, res, next) => {
         try {
             const userId = +req.params.userId;
 
-            if (userId < 0 || !Number.isInteger(userId) || Number.isNaN(userId)) {
-                throw new Error('Not Valid ID');
+            const { preferL = 'de' } = req.query;
+
+            if (userId.length !== 25 ) {
+                throw new Error(errorMessages.ID_IS_INVALID[preferL]);
             }
 
             next();

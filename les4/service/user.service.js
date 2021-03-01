@@ -1,13 +1,5 @@
-const path = require('path');
-const { promisify } = require('util');
-const fs = require('fs');
 const errorMessages = require('../messages/error.messages');
 const User = require('../dataBase/model/User');
-
-const dbPath = path.join(process.cwd(), 'dataBase', 'users.json');
-
-const readFilePromise = promisify(fs.readFile);
-const writeFilePromise = promisify(fs.writeFile);
 
 /**
 *@ findUsers - this is function to find all existing users
@@ -43,8 +35,8 @@ module.exports = {
         return users[userId];
     },
 
-    createUser: (user) => {
-        User.create(user);
+    createUser: async (user) => {
+        await User.create(user);
     },
 
     deleteUser: async (userId, prefLang) => {

@@ -31,8 +31,8 @@ module.exports = {
     },
     AGE_IS_INVALID: {
         en: 'Your user age is invalid',
-        ua: 'Твій вік не валідний',
-        ru: 'Твой возраст не валидный'
+        ua: 'Твій вік недійсний',
+        de: 'Ihr Benutzeralter ist ungültig'
     },
     TOO_BIG_AGE: {
         en: 'Your user age is too big',

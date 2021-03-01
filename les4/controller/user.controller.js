@@ -5,7 +5,7 @@ const errorMessages = require('../messages/error.messages');
 module.exports = {
     getAllUsers: async (req, res) => {
         try {
-            const { preferL = 'en' } = req.query;
+            const { preferL = 'de' } = req.query;
             const filter = req.query;
 
             delete filter.preferL;
@@ -32,7 +32,7 @@ module.exports = {
         try {
             const { preferL = 'en' } = req.query;
 
-            await userService.createUser(req.body);
+            await userService.createUser(req.query);
 
             res.status(errorCodes.CREATED).json(errorMessages.USER_CREATED[preferL]);
         } catch (err) {

@@ -1,3 +1,5 @@
 module.exports = {
-    errorCodesEnum: require('./errorCodes.enum')
+    errorCodesEnum: require('./errorCodes.enum'),
+    dataBaseSchema: require('./dataBaseSchema.enum'),
+    regexEnum: require('./regex.enum')
 };

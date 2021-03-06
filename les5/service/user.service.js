@@ -1,4 +1,4 @@
-const User = require('../dataBase/model/User');
+const User = require('../model/User');
 
 /**
 *@ findUsers - this is function to find all existing users

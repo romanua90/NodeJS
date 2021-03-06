@@ -1,4 +1,4 @@
-const Address = require('../dataBase/model/Address');
+const Address = require('../model/Address');
 
 module.exports = {
     findAddresses: (query) => Address.find(query),

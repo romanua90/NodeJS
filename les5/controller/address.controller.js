@@ -1,5 +1,7 @@
-const addressService = require('../service/address.service');
+const { addressService } = require('../service');
+
 const statusCode = require('../constant/errorCodes.enum');
+
 const successMessage = require('../messages/error.messages');
 
 module.exports = {
@@ -19,7 +21,7 @@ module.exports = {
 
     createAddress: async (req, res) => {
         try {
-            const { preferL = 'en' } = req.query;
+            const { preferL = 'de' } = req.query;
 
             await addressService.createAddress(req.body);
 
@@ -43,7 +45,7 @@ module.exports = {
 
     deleteSingleAddress: async (req, res) => {
         try {
-            const { preferL = 'en' } = req.query;
+            const { preferL = 'de' } = req.query;
             const { addressId } = req.params;
 
             await addressService.deleteAddress(addressId);

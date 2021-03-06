@@ -1,5 +1,5 @@
-const House = require('../dataBase/model/House');
-require('../dataBase/model/Address');
+const House = require('../model/House');
+require('../model/Address');
 
 module.exports = {
     findHouses: (query) => House.find(query),

@@ -1,6 +1,7 @@
-const userService = require('../service/user.service');
-const statusCode = require('../constant/errorCodes.enum');
-const errorMessage = require('../messages/error.messages');
+const { userService } = require('../service');
+const { errorCodesEnum: statusCode } = require('../constant');
+const { errorMessages: errorMessage } = require('../messages');
+const { userValidators } = require('../validator');
 
 module.exports = {
     isIdValid: (req, res, next) => {
@@ -18,25 +19,12 @@ module.exports = {
         }
     },
 
-    isUserValid: (req, res, next) => {
+    isUserValid: async (req, res, next) => {
         try {
-            const { first_name, last_name, age } = req.body;
-            const { preferL = 'de' } = req.query;
+            const { error } = await userValidators.createValidator.validate(req.body);
 
-            if (!first_name || !last_name || !age) {
-                throw new Error(errorMessage.ABSENT_FIELDS[preferL]);
-            }
-
-            if (first_name.length < 2) {
-                throw new Error(errorMessage.TOO_SHORT_FIRST_NAME[preferL]);
-            }
-
-            if (last_name.length < 2) {
-                throw new Error(errorMessage.TOO_SHORT_LAST_NAME[preferL]);
-            }
-
-            if (age.length > 3) {
-                throw new Error(errorMessage.TOO_OLD[preferL]);
+            if (error) {
+                throw new Error(error.details[0].message);
             }
 
             next();

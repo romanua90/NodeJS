@@ -30,12 +30,12 @@ module.exports = {
         de: 'Benutzer wurde geloescht'
     },
     AGE_IS_INVALID: {
-        en: 'Your user age is invalid',
+        en: 'Your age is invalid',
         ua: 'Твій вік недійсний',
         de: 'Ihr Benutzeralter ist ungültig'
     },
     TOO_OLD: {
-        en: 'Your user age is too big',
+        en: 'Your age is too big',
         ua: 'Твій вік занадто великий',
         de: 'hr Benutzeralter ist zu gross'
     },

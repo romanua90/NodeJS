@@ -31,7 +31,7 @@ module.exports = {
         try {
             const { preferL = 'de' } = req.query;
 
-            await userService.createUser(req.query);
+            await userService.createUser(req.body);
 
             res.status(errorCodes.CREATED).json(errorMessages.USER_CREATED[preferL]);
         } catch (err) {

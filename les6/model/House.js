@@ -1,5 +1,7 @@
 const { Schema, model } = require('mongoose');
 
+const { dataBaseSchemaEnum: { HOUSE, ADDRESS } } = require('../constant');
+
 const houseSchema = new Schema({
     area: { type: Number, required: true },
     price: { type: Number, required: true },
@@ -9,7 +11,7 @@ const houseSchema = new Schema({
 }, { toObject: { virtuals: true }, toJSON: { virtuals: true } });
 
 houseSchema.virtual('address', {
-    ref: 'Address',
+    ref: ADDRESS,
     localField: '_address',
     foreignField: '_id'
 });
@@ -21,4 +23,4 @@ houseSchema.pre('find', function() {
         this.populate('address');
     });
 
-module.exports = model('House', houseSchema);
+module.exports = model(HOUSE, houseSchema);

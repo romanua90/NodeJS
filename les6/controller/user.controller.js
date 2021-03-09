@@ -31,7 +31,7 @@ module.exports = {
     createUser: async (req, res) => {
         try {
             const { preferL = 'de' } = req.query;
-            const { password } = res.body;
+            const { password } = req.body;
 
             const hashPassword = await passwordHasher.hash(password);
 

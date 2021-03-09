@@ -1,4 +1,6 @@
-const User = require('../model/User');
+const { User } = require('../model');
+require('../model/House');
+require('../model/Address');
 
 /**
 *@ findUsers - this is function to find all existing users

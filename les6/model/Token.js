@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
-
-const { dataBaseSchemaEnum: { TOKEN, USER } } = require('../constant');
+const { USER, TOKEN } = require('../constant/dataBaseSchema.enum');
 
 const tokenSchema = new Schema({
     access_token: { type: String },

@@ -1,6 +1,7 @@
-const userService = require('../service/user.service');
+const { userService, authService } = require('../service');
 const errorCodes = require('../constant/errorCodes.enum.js');
 const errorMessages = require('../messages/error.messages');
+const { passwordHasher } = require('../helper');
 
 module.exports = {
     getAllUsers: async (req, res) => {
@@ -30,8 +31,11 @@ module.exports = {
     createUser: async (req, res) => {
         try {
             const { preferL = 'de' } = req.query;
+            const { password } = res.body;
 
-            await userService.createUser(req.body);
+            const hashPassword = await passwordHasher.hash(password);
+
+            await userService.createUser({ ...req.body, password: hashPassword });
 
             res.status(errorCodes.CREATED).json(errorMessages.USER_CREATED[preferL]);
         } catch (err) {
@@ -42,6 +46,7 @@ module.exports = {
         try {
             const { params: { userId }, query: { prefLang = 'de' } } = req;
 
+            await authService.deleteAllUserTokens(req.user._id);
             await userService.deleteUser(userId);
 
             res.status(errorCodes.OK).json(errorMessages.USER_DELETED[prefLang]);

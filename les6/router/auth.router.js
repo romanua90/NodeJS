@@ -1,10 +1,10 @@
 const router = require('express').Router();
 
-const { authController } = require('../controller');
+const { AuthController } = require('../controller');
 const { authMiddleware } = require('../middleware');
 
-router.post('/', authMiddleware.isAuthDataValid, authMiddleware.isAuthUserExist, authController.authUser);
+router.post('/', authMiddleware.isAuthDataValid, authMiddleware.isAuthUserExist, AuthController.authUser);
 
-router.post('/refresh', authMiddleware.checkRefreshToken, authController.generateNewTokenPair);
+router.post('/refresh', authMiddleware.checkRefreshToken, AuthController.generateNewTokenPair);
 
 module.exports = router;

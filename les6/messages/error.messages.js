@@ -63,5 +63,35 @@ module.exports = {
         en: 'Search on database have no results',
         ua: 'Пошук по базі даних не мав результату',
         de: 'Datenbanksuche hat keine Ergebnisse zurückgegeben'
+    },
+    ABSENT_ACCESS_TOKEN: {
+        en: 'Your request doesnt have access token',
+        ua: 'У Вашому запиті відсутній маркер доступу',
+        de: 'In Ihrer Anfrage fehlt ein Zugriffstoken'
+    },
+    ACCESS_TOKEN_NOT_VALID: {
+        en: 'Your access token is not valid',
+        ua: 'Твій маркер доступу не валідний',
+        de: 'Ihr Zugriffstoken ist ungültig '
+    },
+    SUSPICIOUS_TOKEN: {
+        en: 'Your access token doesnt exist in database',
+        ua: 'Твій маркер доступу відсутній у базі даних',
+        de: 'Ihr Zugriffstoken befindet sich nicht in der Datenbank'
+    },
+    ABSENT_REFRESH_TOKEN: {
+        en: 'Your request doesnt have refresh token',
+        ua: 'У Вашому запиті відсутній маркер оновлення',
+        de: 'In Ihrer Anfrage fehlt ein Aktualisierungstoken '
+    },
+    REFRESH_TOKEN_NOT_VALID: {
+        en: 'Your refresh token is not valid',
+        ua: 'Твій маркер оновлення не валідний',
+        de: 'Ihr Update-Token ist ungültig '
+    },
+    UNAUTHORISED_ACCESS: {
+        en: 'Unauthorised access attempt to user data',
+        ua: 'Неавторізована спроба доступу до даних користувача',
+        de: 'Nicht autorisierter Versuch, auf Benutzerdaten zuzugreifen '
     }
 };

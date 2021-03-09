@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const { errorCodesEnum: statusCode } = require('../constant');
 const { errorMessages } = require('../messages');
-const { TOKEN, USER } = require('../model');
+const { Token, User } = require('../model');
 const { authValidators } = require('../validator');
 const { JWT_SECRET, JWT_REFRESH } = require('../config/config');
 const { constant } = require('../constant');
@@ -27,7 +27,7 @@ module.exports = {
             const { email } = req.body;
             const { preferL = 'de' } = req.query;
 
-            const user = await USER.findOne({ email });
+            const user = await User.findOne({ email });
 
             if (!user) {
                 throw new Error(errorMessages.NO_RESULT_FOUND[preferL]);
@@ -56,7 +56,7 @@ module.exports = {
                 }
             });
 
-            const tokens = await TOKEN.findOne({ access_token }).populate('_user_id');
+            const tokens = await Token.findOne({ access_token }).populate('_user_id');
 
             if (!tokens) {
                 throw new Error(errorMessages.SUSPICIOUS_TOKEN[preferL]);
@@ -72,7 +72,7 @@ module.exports = {
 
     checkRefreshToken: async (req, res, next) => {
         try {
-            const { preferL = 'en' } = req.query;
+            const { preferL = 'de' } = req.query;
             const refresh_token = req.get(constant.AUTHORIZATION);
 
             if (!refresh_token) {
@@ -85,7 +85,7 @@ module.exports = {
                 }
             });
 
-            const tokens = await TOKEN.findOne({ refresh_token });
+            const tokens = await Token.findOne({ refresh_token });
 
             if (!tokens) {
                 throw new Error(errorMessages.SUSPICIOUS_TOKEN[preferL]);

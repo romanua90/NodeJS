@@ -1,6 +1,6 @@
 module.exports = {
-    HOUSE: require('./House'),
-    ADDRESS: require('./Address'),
-    USER: require('./User'),
-    TOKEN: require('./Token')
+    House: require('./House'),
+    Address: require('./Address'),
+    User: require('./User'),
+    Token: require('./Token')
 };

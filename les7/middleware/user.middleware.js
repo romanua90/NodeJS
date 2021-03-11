@@ -49,7 +49,7 @@ module.exports = {
                 next();
             }
 
-            const { error } = await userValidators.findUserValidator.validate(filter);
+            const { error } = await userValidators.findValidator.validate(filter);
 
             if (error) {
                 throw new ErrorHandler(statusCode.BAD_REQUEST,

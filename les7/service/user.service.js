@@ -12,9 +12,11 @@ require('../model/Address');
 module.exports = {
     findUsers: (query) => User.find(query),
 
-    findUserById: (userId) => User.findById(userId),
-
     createUser: (user) => User.create(user),
+
+    findOneUser: (query) => User.findOne(query),
+
+    findUserById: (userId) => User.findById(userId),
 
     deleteUser: (userId) => User.findByIdAndRemove(userId),
 };

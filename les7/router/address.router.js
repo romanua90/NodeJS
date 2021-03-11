@@ -1,14 +1,14 @@
 const router = require('express').Router();
 
-const addressController = require('../controller/address.controller');
-const addressMiddleware = require('../middleware/address.middleware');
+const { AddressController } = require('../controller');
+const { addressMiddleware } = require('../middleware');
 
-router.get('/', addressMiddleware.isAddressSearchResultExist, addressController.getAddresses);
+router.get('/', addressMiddleware.isAddressExist, AddressController.getAddresses);
 
-router.post('/', addressMiddleware.isAddressValid, addressController.createAddress);
+router.post('/', addressMiddleware.isAddressValid, AddressController.createAddress);
 
-router.get('/:addressId', addressMiddleware.isIdValid, addressMiddleware.isAddressExist, addressController.getSingleAddress);
+router.get('/:addressId', addressMiddleware.isIdValid, addressMiddleware.isAddressExist, AddressController.getSingleAddress);
 
-router.delete('/:addressId', addressMiddleware.isIdValid, addressController.deleteSingleAddress);
+router.delete('/:addressId', addressMiddleware.isIdValid, AddressController.deleteSingleAddress);
 
 module.exports = router;

@@ -5,7 +5,7 @@ const { userMiddleware, authMiddleware } = require('../middleware');
 
 router.get('/', authMiddleware.checkAccessToken,
     userMiddleware.isSearchQueryValid,
-    UserController.getAllUsers);
+    UserController.getUsers);
 
 router.post('/', userMiddleware.isUserValid,
     userMiddleware.isUserAlreadyExist,
@@ -15,6 +15,6 @@ router.get('/:userId', UserController.getSingleUser);
 
 router.delete('/:userId',
     userMiddleware.isIdValid,
-    UserController.deleteUser);
+    UserController.deleteSingleUser);
 
 module.exports = router;

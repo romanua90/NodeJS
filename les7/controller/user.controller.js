@@ -1,57 +1,82 @@
-const { userService, authService } = require('../service');
-const errorCodes = require('../constant/errorCodes.enum.js');
-const errorMessages = require('../messages/error.messages');
+const { emailActionEnum: emailAction, statusCodeEnum: statusCode } = require('../constant');
 const { passwordHasher } = require('../helper');
+const { errorMessages } = require('../messages');
+const { authService, emailService, userService } = require('../service');
 
 module.exports = {
-    getAllUsers: async (req, res) => {
+    getUsers: async (req, res, next) => {
         try {
             const filter = req.query;
 
             delete filter.preferL;
 
             const users = await userService.findUsers(filter);
-            res.status(errorCodes.OK).json(users);
-        } catch (err) {
-            res.status(errorCodes.BAD_REQUEST).json(err.message);
+
+            res.status(statusCode.OK).json(users);
+        } catch (e) {
+            next(e);
         }
     },
 
-    getSingleUser: async (req, res) => {
+    createUser: async (req, res, next) => {
         try {
-            const { userId } = req.params;
-
-            const user = await userService.findUserById(userId);
-
-            res.status(errorCodes.OK).json(user);
-        } catch (err) {
-            res.status(errorCodes.BAD_REQUEST).json(err.message);
-        }
-    },
-    createUser: async (req, res) => {
-        try {
-            const { preferL = 'de' } = req.query;
-            const { password } = req.body;
+            const { preferL = 'en' } = req.query;
+            const { email, password } = req.body;
 
             const hashPassword = await passwordHasher.hash(password);
 
+            const allUsers = await userService.findUsers();
+
+            const allEmails = [];
+            allUsers.forEach((user) => {
+                allEmails.push(user.email);
+            });
+
             await userService.createUser({ ...req.body, password: hashPassword });
 
-            res.status(errorCodes.CREATED).json(errorMessages.USER_CREATED[preferL]);
-        } catch (err) {
-            res.status(errorCodes.BAD_REQUEST).json(err.message);
+            const { full_name } = await userService.findOneUser({ email });
+
+            await emailService.sendMail(email, emailAction.ACCOUNT_CREATED, { name: full_name });
+
+            await emailService.sendMail(allEmails, emailAction.NEW_MEMBER, { name: full_name });
+
+            res.status(statusCode.CREATED).json(errorMessages.USER_CREATED[preferL]);
+        } catch (e) {
+            next(e);
         }
     },
-    deleteUser: async (req, res) => {
-        try {
-            const { params: { userId }, query: { prefLang = 'de' } } = req;
 
-            await authService.deleteAllUserTokens(req.user._id);
+    getSingleUser: async (req, res, next) => {
+        try {
+            const { userId } = req.params;
+            const { email, full_name } = req.user;
+
+            const user = await userService.findUserById(userId);
+            const date = new Date().toLocaleString();
+
+            await emailService.sendMail(email, emailAction.ACCOUNT_INFO_ACCESSED, { name: full_name, date });
+
+            res.status(statusCode.OK).json(user);
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    deleteSingleUser: async (req, res, next) => {
+        try {
+            const { preferL = 'en' } = req.query;
+            const { userId } = req.params;
+            const { _id, email, full_name } = req.user;
+
+            await authService.deleteAllUserTokens(_id);
+
             await userService.deleteUser(userId);
 
-            res.status(errorCodes.OK).json(errorMessages.USER_DELETED[prefLang]);
-        } catch (err) {
-            res.status(errorCodes.BAD_REQUEST).json(err.message);
+            await emailService.sendMail(email, emailAction.ACCOUNT_DELETED, { name: full_name });
+
+            res.status(statusCode.OK).json(errorMessages.USER_DELETED[preferL]);
+        } catch (e) {
+            next(e);
         }
     },
 };

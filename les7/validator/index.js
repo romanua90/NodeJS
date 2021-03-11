@@ -1,6 +1,7 @@
 module.exports = {
     addressValidators: require('./address'),
-    userValidators: require('./user'),
+    authValidators: require('./auth'),
     houseValidators: require('./house'),
-    authValidators: require('./auth')
+    userValidators: require('./user'),
+    utilValidators: require('./util'),
 };

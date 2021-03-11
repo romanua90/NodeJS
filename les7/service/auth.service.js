@@ -1,10 +1,8 @@
-const { passwordHasher, tokenizer } = require('../helper');
+const { tokenizer } = require('../helper');
 const { Token } = require('../model');
 
 module.exports = {
-    generateTokens: async (user, password) => {
-        await passwordHasher.compare(password, user.password);
-
+    generateTokens: async (user) => {
         const tokens = tokenizer();
 
         await Token.create({ ...tokens, _user_id: user._id });

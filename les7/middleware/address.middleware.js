@@ -1,77 +1,84 @@
-const addressService = require('../service/address.service');
-const statusCode = require('../constant/errorCodes.enum');
-const errorMessage = require('../messages/error.messages');
+const { errorCodesEnum: statusCode } = require('../constant');
+const { ErrorHandler } = require('../helper');
+const { errorMessages } = require('../messages');
+const { addressService } = require('../service');
+const { utilValidators, addressValidators } = require('../validator');
 
 module.exports = {
-    isIdValid: (req, res, next) => {
+    isIdValid: async (req, res, next) => {
         try {
             const { addressId } = req.params;
-            const { preferL = 'en' } = req.query;
 
-            if (addressId.length !== 24) {
-                throw new Error(errorMessage.ID_IS_INVALID[preferL]);
+            const { error } = await utilValidators.idMongooseValidator.validate(addressId);
+
+            if (error) {
+                throw new ErrorHandler(statusCode.BAD_REQUEST,
+                    errorMessages.JOI_VALIDATION_ERROR.customCode,
+                    error.details[0].message);
             }
 
             next();
         } catch (e) {
-            res.status(statusCode.BAD_REQUEST).json(e.message);
+            next(e);
         }
     },
 
-    isAddressValid: (req, res, next) => {
+    isAddressValid: async (req, res, next) => {
         try {
-            const {
-                country, region, town, street, number
-            } = req.body;
-            const { preferL = 'en' } = req.query;
+            const { error } = await addressValidators.createValidator.validate(req.body);
 
-            if (!country || !region || !town || !street || !number) {
-                throw new Error(errorMessage.ABSENT_FIELDS[preferL]);
-            }
-
-            if (number < 0 || !Number.isInteger(number) || Number.isNaN(number)) {
-                throw new Error(errorMessage.HOUSE_NUMBER_IS_INVALID[preferL]);
+            if (error) {
+                throw new ErrorHandler(statusCode.BAD_REQUEST,
+                    errorMessages.JOI_VALIDATION_ERROR.customCode,
+                    error.details[0].message);
             }
 
             next();
         } catch (e) {
-            res.status(statusCode.BAD_REQUEST).json(e.message);
+            next(e);
         }
     },
 
-    isAddressSearchResultExist: async (req, res, next) => {
+    isSearchQueryValid: async (req, res, next) => {
         try {
-            const { preferL = 'en' } = req.query;
             const filter = req.query;
 
             delete filter.preferL;
 
-            const addresses = await addressService.findAddresses(filter);
+            if (!filter) {
+                next();
+            }
 
-            if (filter && !addresses.length) {
-                throw new Error(errorMessage.NO_RESULT_FOUND[preferL]);
+            const { error } = await addressValidators.findValidator.validate(filter);
+
+            if (error) {
+                throw new ErrorHandler(statusCode.BAD_REQUEST,
+                    errorMessages.JOI_VALIDATION_ERROR.customCode,
+                    error.details[0].message);
             }
 
             next();
         } catch (e) {
-            res.status(statusCode.BAD_REQUEST).json(e.message);
+            next(e);
         }
     },
 
     isAddressExist: async (req, res, next) => {
         try {
             const { addressId } = req.params;
-            const { preferL = 'en' } = req.query;
+            const { preferL = 'de' } = req.query;
 
             const address = await addressService.findAddressById(addressId);
 
             if (!address) {
-                throw new Error(errorMessage.NO_RESULT_FOUND[preferL]);
+                throw new ErrorHandler(statusCode.NOT_FOUND,
+                    errorMessages.NO_RESULT_FOUND.customCode,
+                    errorMessages.NO_RESULT_FOUND[preferL]);
             }
 
             next();
         } catch (e) {
-            res.status(statusCode.BAD_REQUEST).json(e.message);
+            next(e);
         }
     }
 };

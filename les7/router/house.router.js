@@ -1,14 +1,21 @@
 const router = require('express').Router();
 
-const houseController = require('../controller/house.controller');
-const houseMiddleware = require('../middleware/house.middleware');
+const { HouseController } = require('../controller');
+const { authMiddleware, houseMiddleware } = require('../middleware');
 
-router.get('/', houseMiddleware.isHouseSearchResultExist, houseController.getHouses);
+router.get('/', authMiddleware.checkAccessToken,
+    houseMiddleware.isSearchQueryValid,
+    HouseController.getHouses);
 
-router.post('/', houseMiddleware.isHouseValid, houseController.createHouse);
+router.post('/', houseMiddleware.isHouseValid, HouseController.createHouse);
 
-router.get('/:houseId', houseMiddleware.isIdValid, houseMiddleware.isHouseExist, houseController.getSingleHouse);
+router.use('/:houseId',
+    authMiddleware.checkAccessToken,
+    houseMiddleware.isIdValid,
+    houseMiddleware.isHouseExist);
 
-router.delete('/:houseId', houseMiddleware.isIdValid, houseController.deleteSingleHouse);
+router.get('/:houseId', HouseController.getSingleHouse);
+
+router.delete('/:houseId', HouseController.deleteSingleHouse);
 
 module.exports = router;

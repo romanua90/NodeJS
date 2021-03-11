@@ -1,73 +1,84 @@
-const houseService = require('../service/house.service');
-const statusCode = require('../constant/errorCodes.enum');
-const errorMessage = require('../messages/error.messages');
+const { statusCodeEnum: statusCode } = require('../constant');
+const { ErrorHandler } = require('../helper');
+const { errorMessages } = require('../messages');
+const { houseService } = require('../service');
+const { utilValidators, houseValidators } = require('../validator');
 
 module.exports = {
-    isIdValid: (req, res, next) => {
+    isIdValid: async (req, res, next) => {
         try {
             const { houseId } = req.params;
-            const { preferL = 'en' } = req.query;
 
-            if (houseId.length !== 24) {
-                throw new Error(errorMessage.ID_IS_INVALID[preferL]);
+            const { error } = await utilValidators.idMongooseValidator.validate(houseId);
+
+            if (error) {
+                throw new ErrorHandler(statusCode.BAD_REQUEST,
+                    errorMessages.JOI_VALIDATION_ERROR.customCode,
+                    error.details[0].message);
             }
 
             next();
         } catch (e) {
-            res.status(statusCode.BAD_REQUEST).json(e.message);
+            next(e);
         }
     },
 
-    isHouseValid: (req, res, next) => {
+    isHouseValid: async (req, res, next) => {
         try {
-            const {
-                area, price, year_builded, year_selled
-            } = req.body;
-            const { preferL = 'en' } = req.query;
+            const { error } = await houseValidators.createHouseValidator.validate(req.body);
 
-            if (!area || !price || !year_builded || !year_selled) {
-                throw new Error(errorMessage.ABSENT_FIELDS[preferL]);
+            if (error) {
+                throw new ErrorHandler(statusCode.BAD_REQUEST,
+                    errorMessages.JOI_VALIDATION_ERROR.customCode,
+                    error.details[0].message);
             }
 
             next();
         } catch (e) {
-            res.status(statusCode.BAD_REQUEST).json(e.message);
+            next(e);
         }
     },
 
-    isHouseSearchResultExist: async (req, res, next) => {
+    isSearchQueryValid: async (req, res, next) => {
         try {
-            const { preferL = 'en' } = req.query;
             const filter = req.query;
 
             delete filter.preferL;
 
-            const houses = await houseService.findHouses(filter, preferL);
+            if (!filter) {
+                next();
+            }
 
-            if (filter && !houses.length) {
-                throw new Error(errorMessage.NO_RESULT_FOUND[preferL]);
+            const { error } = await houseValidators.findHouseValidator.validate(filter);
+
+            if (error) {
+                throw new ErrorHandler(statusCode.BAD_REQUEST,
+                    errorMessages.JOI_VALIDATION_ERROR.customCode,
+                    error.details[0].message);
             }
 
             next();
         } catch (e) {
-            res.status(statusCode.BAD_REQUEST).json(e.message);
+            next(e);
         }
     },
 
     isHouseExist: async (req, res, next) => {
         try {
             const { houseId } = req.params;
-            const { preferL = 'en' } = req.query;
+            const { preferL = 'de' } = req.query;
 
             const house = await houseService.findHouseById(houseId);
 
             if (!house) {
-                throw new Error(errorMessage.NO_RESULT_FOUND[preferL]);
+                throw new ErrorHandler(statusCode.NOT_FOUND,
+                    errorMessages.NO_RESULT_FOUND.customCode,
+                    errorMessages.NO_RESULT_FOUND[preferL]);
             }
 
             next();
         } catch (e) {
-            res.status(statusCode.BAD_REQUEST).json(e.message);
+            next(e);
         }
     }
 };

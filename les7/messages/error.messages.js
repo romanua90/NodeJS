@@ -1,4 +1,10 @@
 module.exports = {
+    BAD_REQUEST: {
+        customCode: 4000
+    },
+    JOI_VALIDATION_ERROR: {
+        customCode: 4001
+    },
     WRONG_EMAIL: {
         en: 'Wrong email',
         ua: 'Неправильний email',

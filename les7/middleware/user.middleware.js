@@ -72,8 +72,8 @@ module.exports = {
 
             if (user) {
                 throw new ErrorHandler(statusCode.BAD_REQUEST,
-                    errorMessages.USER_ALREADY_EXIST.customCode,
-                    errorMessages.USER_ALREADY_EXIST[preferL]);
+                    errorMessages.USER_IS_EXIST.customCode,
+                    errorMessages.USER_IS_EXIST[preferL]);
             }
 
             next();

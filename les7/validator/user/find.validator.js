@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { regexEnum } = require('../../constant');
 
 module.exports = Joi.object({
     first_name: Joi.string()
@@ -11,6 +12,7 @@ module.exports = Joi.object({
         .min(2)
         .max(255)
         .required(),
+    email: Joi.string().regex(regexEnum.EMAIL_REGEX).optional(),
     age: Joi.number()
         .integer()
         .min(1)

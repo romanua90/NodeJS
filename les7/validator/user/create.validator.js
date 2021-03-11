@@ -13,6 +13,7 @@ module.exports = Joi.object({
         .min(2)
         .max(255)
         .required(),
+    email: Joi.string().regex(regexEnum.EMAIL_REGEX).required(),
     password: Joi.string().regex(regexEnum.PASSWORD_REGEX).required(),
     age: Joi.number()
         .integer()
